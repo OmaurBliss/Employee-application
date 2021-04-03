@@ -1,22 +1,20 @@
 var storeArray = [
     {
-        storeID: 1,
-        storeName: "Bread Pitt",
-        storeDescription: "Organic Wholesale Bakery",
-        status: "open"
+        id: 1,
+        noteTitle: "",
+        $noteText: "",
+       
     },
     {
-        storeID: 2,
-        storeName: "Thai Tanic",
-        storeDescription: "Thai Food To Go",
-        status: "closed"
+        id: 2,
+        noteTitle: "",
+        $noteText: "",
     }
     ,
     {
-        storeID: 3,
-        storeName: "Florist Gump",
-        storeDescription: "Florist and Home Decor",
-        status: "open"
+        id: 2,
+        noteTitle: "",
+        $noteText: "",
     }
 ];
 

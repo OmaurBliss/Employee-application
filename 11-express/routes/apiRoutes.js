@@ -1,55 +1,77 @@
 
-var fs = require ("fs");
+// Dependencies
+const fs = require("fs");
 
-//Special place to store data
-var storeData = require("../db/db.json");
+// imported 'uuid' npm package for unique id
+const { v4: uuidv4 } = require('uuid');
 
+// ROUTING
 module.exports = function (app) {
-  app.get("/api/notes", function (req, res) {
-    res.json(storeData);
-  });
 
-  // var newStore = {
-  //     storeID: $("#storeID").val().trim(),
-  //     storeName: $("#storeName").val().trim(),
-  //     storeDescription: $("#storeDescription").val().trim(),
-  //     status: $("#status").val().trim()
-  // };
+    // API GET Request
+    app.get("/api/notes", (request, response) => {
+        
+        console.log("\n\nExecuting GET notes request");
 
-  app.post("/notes", function (req, res) {
-    storeData.push(req.body);
+        // Read 'db.json' file 
+        let data = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
+        
+        console.log("\nGET request - Returning notes data: " + JSON.stringify(data));
+        
+        // Send read data to response of 'GET' request
+        response.json(data);
+    });
+
+
+    // API POST Request
+    app.post("/api/notes", (request, response) => {
+
+       
+        const newNote = request.body;
+        
+        console.log("\n\nPOST request - New Note : " + JSON.stringify(newNote));
+
+        // Assigned unique id obtained from 'uuid' package
+        newNote.id = uuidv4();
+
+        let data = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
     
-    fs.readFile('/Users/joe/test.txt', 'utf8' , (err, data) => {
-        if (err) {
-          console.error(err)
-          return
-        }
-        console.log(data)
-      })
-    //use fs to read the file
-    //push new note object to the data which got returned 
-    //use fs.writeFile to write new data to db.json
+        data.push(newNote);
 
-    res.json(true);
-  });
+        fs.writeFileSync('./db/db.json', JSON.stringify(data));
+        
+        console.log("\nSuccessfully added new note to 'db.json' file!");
 
-  // var storeUpdate = {
-  //     storeID: storeID,
-  //     status: status
-  // };
+        // Send response
+        response.json(data);
+    });
 
-  app.post("/api/storeupdate", function (req, res) {
-    var storeUpdate = req.body;
-    //we need to get the correct object
-    for (var i = 0; i < storeData.length; i++) {
-      console.log(storeData[i].storeID, storeUpdate.storeID);
-      if (storeData[i].storeID == storeUpdate.storeID) {
-        storeData[i].status = storeData[i].status === "open" ? "closed" : "open";
 
-        break; //Stop this loop, we found it!
-      }
-    }
+    // API DELETE request
+    app.delete("/api/notes/:id", (request, response) => {
 
-    res.json(true);
-  });
+        let noteId = request.params.id.toString();
+        
+        console.log(`\n\nDELETE note request for noteId: ${noteId}`);
+
+        let data = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
+
+        const newData = data.filter( note => note.id.toString() !== noteId );
+
+    
+        fs.writeFileSync('./db/db.json', JSON.stringify(newData));
+        
+        console.log(`\nSuccessfully deleted note with id : ${noteId}`);
+
+        response.json(newData);
+    });
 };
+
+
+
+
+
+
+
+ 
+
