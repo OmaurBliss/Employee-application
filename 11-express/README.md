@@ -14,7 +14,8 @@ This ap gives the user the ability to write, save, and delete notes. This is a s
 ## Table of Contents 
 
 * [Installation](#installation)
-* [Tech Used](#techused)
+* [Demonstration](#demonstration)
+* [Tech](#tech)
 * [Credits](#credits)
 * [License](#license)
 * [Questions](#questions)
@@ -24,6 +25,12 @@ Run the following command to install any necessary packages:
 ```
 npm install
 ```
+
+## Demonstration
+
+(https://www.youtube.com/watch?v=tCZAtjikqfw)
+
+
 ## Tech Used
 - Node JS
 - Express
